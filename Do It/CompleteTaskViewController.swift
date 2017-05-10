@@ -11,27 +11,24 @@ import UIKit
 class CompleteTaskViewController: UIViewController {
     
     @IBOutlet weak var taskLabel: UILabel!
-    var task = Task()
-    var previousVC = TasksViewController()
-    
+    var task : Task? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if task.important {
-            taskLabel.text = "❗️\(task.name)"
+        if task!.important {
+            taskLabel.text = "❗️\(String(describing: task!.name!))"
         } else {
-            taskLabel.text = task.name
+            taskLabel.text = task!.name!
         }
     }
 
     @IBAction func completeTapped(_ sender: Any) {
-        previousVC.tasks.remove(at: previousVC.selectedIndex)
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        //Reloads data in table in previousVC
-        previousVC.tableView.reloadData()
-        
+        context.delete(task!)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
         //So when you hit "Add", it jumps back to TasksVC
         navigationController!.popViewController(animated: true)
     }
