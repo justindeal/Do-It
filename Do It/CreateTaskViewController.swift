@@ -13,6 +13,8 @@ class CreateTaskViewController: UIViewController {
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var importantSwitch: UISwitch!
     
+    var previousVC = TasksViewController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,6 +22,22 @@ class CreateTaskViewController: UIViewController {
     }
 
     @IBAction func addTapped(_ sender: Any) {
+        //Create a task from the object information
+        
+        let task = Task()
+        task.name = taskNameTextField.text!
+        task.important = importantSwitch.isOn
+        
+        //Add task to array in previous ViewController
+        
+        previousVC.tasks.append(task)
+        
+        //Reloads data in table in previousVC
+        previousVC.tableView.reloadData()
+        
+        //So when you hit "Add", it jumps back to TasksVC
+        navigationController!.popViewController(animated: true)
+        
     }
    
 
